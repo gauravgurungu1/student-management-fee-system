@@ -38,15 +38,18 @@ def student_list(request):
 
 # CREATE - Add a new student
 def student_create(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = StudentForm(request.POST)
+
         if form.is_valid():
             form.save()
-            return redirect('student_list')
+            return redirect("student_list")
     else:
         form = StudentForm()
 
-    return render(request, 'students/student_form.html', {'form': form})
+    return render(request, "students/student_form.html", {
+        "form": form
+    })
 
 
 # UPDATE - Edit an existing student

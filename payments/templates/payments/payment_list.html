@@ -1,0 +1,233 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+Payments
+{% endblock %}
+
+{% block content %}
+
+<!-- Page Header -->
+<div class="mb-6">
+
+    <div class="flex flex-col sm:flex-row sm:items-center
+                sm:justify-between gap-4">
+
+        <div>
+            <h2 class="text-2xl font-bold text-slate-800">
+                Payments
+            </h2>
+
+            <p class="text-slate-500 mt-1">
+                View and manage student fee payments.
+            </p>
+        </div>
+
+        <a
+            href="{% url 'payments:payment_create' %}"
+            class="inline-flex items-center justify-center gap-2
+                   px-5 py-2.5 bg-blue-900 text-white
+                   rounded-lg font-medium
+                   hover:bg-blue-800 transition"
+        >
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Add Payment
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- Payment Table -->
+<div class="bg-white rounded-xl border border-slate-200
+            shadow-sm overflow-hidden">
+
+    {% if payments %}
+
+        <div class="overflow-x-auto">
+
+            <table class="w-full text-sm">
+
+                <thead class="bg-slate-50 border-b
+                              border-slate-200">
+
+                    <tr>
+
+                        <th class="px-6 py-4 text-left
+                                   font-semibold text-slate-600">
+                            Student
+                        </th>
+
+                        <th class="px-6 py-4 text-left
+                                   font-semibold text-slate-600">
+                            Fee
+                        </th>
+
+                        <th class="px-6 py-4 text-left
+                                   font-semibold text-slate-600">
+                            Payment Reference
+                        </th>
+
+                        <th class="px-6 py-4 text-left
+                                   font-semibold text-slate-600">
+                            Amount
+                        </th>
+
+                        <th class="px-6 py-4 text-left
+                                   font-semibold text-slate-600">
+                            Method
+                        </th>
+
+                        <th class="px-6 py-4 text-left
+                                   font-semibold text-slate-600">
+                            Date
+                        </th>
+
+                        <th class="px-6 py-4 text-left
+                                   font-semibold text-slate-600">
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody class="divide-y divide-slate-100">
+
+                    {% for payment in payments %}
+
+                        <tr class="hover:bg-slate-50 transition">
+
+                            <!-- Student -->
+                            <td class="px-6 py-4">
+
+                                <p class="font-medium text-slate-800">
+                                    {{ payment.fee.student.name }}
+                                </p>
+
+                                <p class="text-xs text-slate-500 mt-1">
+                                    {{ payment.fee.student.email }}
+                                </p>
+
+                            </td>
+
+
+                            <!-- Fee -->
+                            <td class="px-6 py-4">
+
+                                <p class="font-medium text-slate-800">
+                                    {{ payment.fee.title }}
+                                </p>
+
+                                <p class="text-xs text-slate-500 mt-1">
+                                    Total: Rs. {{ payment.fee.amount }}
+                                </p>
+
+                            </td>
+
+
+                            <!-- Payment Reference -->
+                            <td class="px-6 py-4">
+
+                                <span class="font-mono text-sm
+                                             text-slate-700">
+                                    {{ payment.payment_reference }}
+                                </span>
+
+                            </td>
+
+
+                            <!-- Amount -->
+                            <td class="px-6 py-4 font-semibold
+                                       text-green-700 whitespace-nowrap">
+
+                                Rs. {{ payment.amount }}
+
+                            </td>
+
+
+                            <!-- Payment Method -->
+                            <td class="px-6 py-4 text-slate-600">
+
+                                {{ payment.get_payment_method_display }}
+
+                            </td>
+
+
+                            <!-- Date -->
+                            <td class="px-6 py-4 text-slate-600
+                                       whitespace-nowrap">
+
+                                {{ payment.payment_date|date:"M d, Y" }}
+
+                            </td>
+
+
+                            <!-- Action -->
+                            <td class="px-6 py-4">
+
+                                <a
+                                    href="{% url 'payments:payment_detail' payment.id %}"
+                                    class="inline-flex items-center gap-2
+                                           px-3 py-2 text-blue-700
+                                           hover:bg-blue-50 rounded-lg
+                                           transition"
+                                >
+                                    <i class="fa fa-eye"
+                                       aria-hidden="true"></i>
+                                    View
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    {% else %}
+
+        <!-- Empty State -->
+        <div class="p-10 text-center">
+
+            <div class="w-14 h-14 mx-auto rounded-full
+                        bg-blue-50 flex items-center
+                        justify-center mb-4">
+
+                <i class="fa fa-credit-card text-blue-600 text-xl"
+                   aria-hidden="true"></i>
+
+            </div>
+
+            <h3 class="text-lg font-semibold text-slate-800">
+                No payments found
+            </h3>
+
+            <p class="text-slate-500 mt-1 mb-5">
+                No payment records have been created yet.
+            </p>
+
+            <a
+                href="{% url 'payments:payment_create' %}"
+                class="inline-flex items-center gap-2
+                       px-5 py-2.5 bg-blue-900 text-white
+                       rounded-lg font-medium
+                       hover:bg-blue-800 transition"
+            >
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                Add Payment
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

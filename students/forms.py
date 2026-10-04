@@ -1,13 +1,18 @@
 from django import forms
-
 from .models import Student
 
 
 class StudentForm(forms.ModelForm):
-
     class Meta:
         model = Student
-        fields = ['name', 'email', 'phone', 'course']
+
+        fields = [
+            'name',
+            'email',
+            'phone',
+            'course',
+            'batch',
+        ]
 
         widgets = {
             'name': forms.TextInput(attrs={
@@ -28,5 +33,9 @@ class StudentForm(forms.ModelForm):
             'course': forms.Select(attrs={
                 'class': 'w-full px-4 py-3 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
             }),
-            
+
+            'batch': forms.NumberInput(attrs={
+                'class': 'w-full px-4 py-3 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
+                'placeholder': 'Enter joining year'
+            }),
         }

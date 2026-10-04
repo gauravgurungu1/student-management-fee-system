@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}Payment Details{% endblock %}
+
+{% block content %}
+
+<div class="max-w-4xl mx-auto">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6">
+
+        <div>
+            <h1 class="text-2xl font-bold text-slate-800">
+                Payment Details
+            </h1>
+
+            <p class="text-slate-500 mt-1">
+                View payment information.
+            </p>
+        </div>
+
+        <a href="{% url 'payments:payment_list' %}"
+           class="inline-flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 transition">
+            <i class="fa fa-arrow-left"></i>
+            Back to Payments
+        </a>
+
+    </div>
+
+
+    <!-- Main Card -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200">
+
+        <div class="p-6">
+
+            <!-- Student Information -->
+            <h2 class="text-lg font-semibold text-slate-800 mb-4">
+                Student Information
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
+
+                <div>
+                    <p class="text-sm text-slate-500">Student</p>
+                    <p class="font-medium text-slate-800 mt-1">
+                        {{ payment.fee.student.name }}
+                    </p>
+                </div>
+
+                <div>
+                    <p class="text-sm text-slate-500">Course</p>
+                    <p class="font-medium text-slate-800 mt-1">
+                        {{ payment.fee.student.course.name }}
+                    </p>
+                </div>
+
+                <div>
+                    <p class="text-sm text-slate-500">Batch</p>
+                    <p class="font-medium text-slate-800 mt-1">
+                        {{ payment.fee.student.batch }}
+                    </p>
+                </div>
+
+                <div>
+                    <p class="text-sm text-slate-500">Fee</p>
+                    <p class="font-medium text-slate-800 mt-1">
+                        {{ payment.fee.title }}
+                    </p>
+                </div>
+
+            </div>
+
+
+            <!-- Payment Information -->
+            <h2 class="text-lg font-semibold text-slate-800 mb-4">
+                Payment Information
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                <div>
+                    <p class="text-sm text-slate-500">Amount</p>
+                    <p class="text-xl font-bold text-slate-800 mt-1">
+                        Rs. {{ payment.amount }}
+                    </p>
+                </div>
+
+                <div>
+                    <p class="text-sm text-slate-500">Payment Method</p>
+                    <p class="font-medium text-slate-800 mt-1">
+                        {{ payment.get_payment_method_display }}
+                    </p>
+                </div>
+
+                <div>
+                    <p class="text-sm text-slate-500">Payment Reference</p>
+                    <p class="font-medium text-slate-800 mt-1">
+                        {{ payment.payment_reference }}
+                    </p>
+                </div>
+
+                <div>
+                    <p class="text-sm text-slate-500">Payment Date</p>
+                    <p class="font-medium text-slate-800 mt-1">
+                        {{ payment.payment_date|date:"M d, Y H:i" }}
+                    </p>
+                </div>
+
+            </div>
+
+
+            <!-- Actions -->
+            <div class="flex justify-end gap-3 mt-8 pt-6 border-t border-slate-200">
+
+                <a href="{% url 'payments:payment_delete' payment.id %}"
+                   class="inline-flex items-center gap-2 px-5 py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
+                    <i class="fa fa-trash"></i>
+                    Delete
+                </a>
+
+                <a href="{% url 'payments:payment_update' payment.id %}"
+                   class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                    <i class="fa fa-pencil"></i>
+                    Edit Payment
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

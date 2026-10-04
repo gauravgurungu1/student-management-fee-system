@@ -1,0 +1,455 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+Fees
+{% endblock %}
+
+{% block content %}
+
+<!-- Page Header -->
+<div class="mb-6">
+
+    <div class="flex flex-col sm:flex-row sm:items-center
+                sm:justify-between gap-4">
+
+        <div>
+            <h2 class="text-2xl font-bold text-slate-800">
+                Fees
+            </h2>
+
+            <p class="text-slate-500 mt-1">
+                Manage student fees and payment status.
+            </p>
+        </div>
+
+        <a
+            href="{% url 'fees:fee_create' %}"
+            class="inline-flex items-center justify-center gap-2
+                   px-5 py-2.5 bg-blue-900 text-white
+                   rounded-lg font-medium
+                   hover:bg-blue-800 transition"
+        >
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Add Fee
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- Filters -->
+<div class="bg-white rounded-xl border border-slate-200
+            shadow-sm p-5 sm:p-6 mb-6">
+
+    <div class="flex items-center gap-2 mb-5">
+
+        <i class="fa fa-filter text-blue-900"
+           aria-hidden="true"></i>
+
+        <h3 class="font-semibold text-slate-800">
+            Filter Fees
+        </h3>
+
+    </div>
+
+
+    <form method="get">
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+            <!-- Course -->
+            <div>
+
+                <label
+                    for="course"
+                    class="block text-sm font-medium
+                           text-slate-700 mb-2"
+                >
+                    Course
+                </label>
+
+                <select
+                    name="course"
+                    id="course"
+                    class="w-full px-4 py-2.5
+                           border border-slate-200 rounded-lg
+                           outline-none focus:ring-2
+                           focus:ring-blue-500
+                           focus:border-blue-500"
+                >
+
+                    <option value="">
+                        Select Course
+                    </option>
+
+                    {% for course in courses %}
+
+                        <option
+                            value="{{ course.id }}"
+                            {% if selected_course == course.id|stringformat:"s" %}
+                                selected
+                            {% endif %}
+                        >
+                            {{ course.name }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- Batch -->
+            <div>
+
+                <label
+                    for="batch"
+                    class="block text-sm font-medium
+                           text-slate-700 mb-2"
+                >
+                    Batch
+                </label>
+
+                <select
+                    name="batch"
+                    id="batch"
+                    class="w-full px-4 py-2.5
+                           border border-slate-200 rounded-lg
+                           outline-none focus:ring-2
+                           focus:ring-blue-500
+                           focus:border-blue-500"
+                >
+
+                    <option value="">
+                        Select Batch
+                    </option>
+
+                    {% for batch in batches %}
+
+                        <option
+                            value="{{ batch }}"
+                            {% if selected_batch == batch|stringformat:"s" %}
+                                selected
+                            {% endif %}
+                        >
+                            {{ batch }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- Buttons -->
+            <div class="flex items-end gap-3">
+
+                <button
+                    type="submit"
+                    class="inline-flex items-center justify-center
+                           gap-2 px-5 py-2.5
+                           bg-blue-900 text-white rounded-lg
+                           font-medium hover:bg-blue-800 transition"
+                >
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                    Filter
+                </button>
+
+                <a
+                    href="{% url 'fees:fee_list' %}"
+                    class="inline-flex items-center justify-center
+                           gap-2 px-5 py-2.5
+                           border border-slate-200 rounded-lg
+                           text-slate-600 font-medium
+                           hover:bg-slate-50 transition"
+                >
+                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                    Clear
+                </a>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+{% if fees %}
+
+    <!-- Fee Table -->
+    <div class="bg-white rounded-xl border border-slate-200
+                shadow-sm overflow-hidden">
+
+        <div class="overflow-x-auto">
+
+            <table class="w-full text-sm">
+
+                <thead class="bg-slate-50 border-b
+                              border-slate-200">
+
+                    <tr>
+
+                        <th class="px-6 py-4 text-left
+                                   font-semibold text-slate-600">
+                            Student
+                        </th>
+
+                        <th class="px-6 py-4 text-left
+                                   font-semibold text-slate-600">
+                            Batch
+                        </th>
+
+                        <th class="px-6 py-4 text-left
+                                   font-semibold text-slate-600">
+                            Course
+                        </th>
+
+                        <th class="px-6 py-4 text-left
+                                   font-semibold text-slate-600">
+                            Fee
+                        </th>
+
+                        <th class="px-6 py-4 text-left
+                                   font-semibold text-slate-600">
+                            Total
+                        </th>
+
+                        <th class="px-6 py-4 text-left
+                                   font-semibold text-slate-600">
+                            Paid
+                        </th>
+
+                        <th class="px-6 py-4 text-left
+                                   font-semibold text-slate-600">
+                            Remaining
+                        </th>
+
+                        <th class="px-6 py-4 text-left
+                                   font-semibold text-slate-600">
+                            Status
+                        </th>
+
+                        <th class="px-6 py-4 text-left
+                                   font-semibold text-slate-600">
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody class="divide-y divide-slate-100">
+
+                    {% for fee in fees %}
+
+                        <tr class="hover:bg-slate-50 transition">
+
+                            <!-- Student -->
+                            <td class="px-6 py-4">
+
+                                <p class="font-medium text-slate-800">
+                                    {{ fee.student.name }}
+                                </p>
+
+                                <p class="text-xs text-slate-500 mt-1">
+                                    {{ fee.student.email }}
+                                </p>
+
+                            </td>
+
+
+                            <!-- Batch -->
+                            <td class="px-6 py-4 text-slate-600">
+                                {{ fee.student.batch }}
+                            </td>
+
+
+                            <!-- Course -->
+                            <td class="px-6 py-4 text-slate-600">
+                                {{ fee.student.course.name }}
+                            </td>
+
+
+                            <!-- Fee Title -->
+                            <td class="px-6 py-4 text-slate-700">
+                                {{ fee.title }}
+                            </td>
+
+
+                            <!-- Total -->
+                            <td class="px-6 py-4 font-medium
+                                       text-slate-800 whitespace-nowrap">
+                                Rs. {{ fee.amount }}
+                            </td>
+
+
+                            <!-- Calculated Paid -->
+                            <td class="px-6 py-4 font-medium
+                                       text-green-700 whitespace-nowrap">
+                                Rs. {{ fee.total_paid }}
+                            </td>
+
+
+                            <!-- Calculated Remaining -->
+                            <td class="px-6 py-4 font-medium
+                                       whitespace-nowrap">
+
+                                {% if fee.remaining_amount > 0 %}
+
+                                    <span class="text-orange-600">
+                                        Rs. {{ fee.remaining_amount }}
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="text-green-700">
+                                        Rs. 0
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Calculated Status -->
+                            <td class="px-6 py-4">
+
+                                {% if fee.computed_status == "PAID" %}
+
+                                    <span
+                                        class="inline-flex items-center
+                                               gap-1.5 px-3 py-1.5
+                                               rounded-full text-xs
+                                               font-medium
+                                               bg-green-100 text-green-700"
+                                    >
+                                        <i class="fa fa-check-circle"
+                                           aria-hidden="true"></i>
+                                        Paid
+                                    </span>
+
+                                {% elif fee.computed_status == "PARTIAL" %}
+
+                                    <span
+                                        class="inline-flex items-center
+                                               gap-1.5 px-3 py-1.5
+                                               rounded-full text-xs
+                                               font-medium
+                                               bg-yellow-100
+                                               text-yellow-700"
+                                    >
+                                        <i class="fa fa-clock-o"
+                                           aria-hidden="true"></i>
+                                        Partial
+                                    </span>
+
+                                {% else %}
+
+                                    <span
+                                        class="inline-flex items-center
+                                               gap-1.5 px-3 py-1.5
+                                               rounded-full text-xs
+                                               font-medium
+                                               bg-red-100 text-red-700"
+                                    >
+                                        <i
+                                            class="fa fa-exclamation-circle"
+                                            aria-hidden="true"
+                                        ></i>
+                                        Pending
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Action -->
+                            <td class="px-6 py-4">
+
+                                <a
+                                    href="{% url 'fees:fee_detail' fee.id %}"
+                                    class="inline-flex items-center
+                                           gap-2 px-3 py-2
+                                           text-blue-700
+                                           hover:bg-blue-50
+                                           rounded-lg transition"
+                                >
+                                    <i class="fa fa-eye"
+                                       aria-hidden="true"></i>
+                                    View
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+{% elif selected_course or selected_batch %}
+
+    <!-- No Results -->
+    <div class="bg-white rounded-xl border border-slate-200
+                shadow-sm p-10 text-center">
+
+        <div class="w-14 h-14 mx-auto rounded-full bg-slate-100
+                    flex items-center justify-center mb-4">
+
+            <i class="fa fa-search text-slate-400 text-xl"
+               aria-hidden="true"></i>
+
+        </div>
+
+        <h3 class="text-lg font-semibold text-slate-800">
+            No fees found
+        </h3>
+
+        <p class="text-slate-500 mt-1">
+            No fee records match the selected course and batch.
+        </p>
+
+    </div>
+
+
+{% else %}
+
+    <!-- Initial State -->
+    <div class="bg-white rounded-xl border border-slate-200
+                shadow-sm p-10 text-center">
+
+        <div class="w-14 h-14 mx-auto rounded-full bg-blue-50
+                    flex items-center justify-center mb-4">
+
+            <i class="fa fa-filter text-blue-600 text-xl"
+               aria-hidden="true"></i>
+
+        </div>
+
+        <h3 class="text-lg font-semibold text-slate-800">
+            Select Course and Batch
+        </h3>
+
+        <p class="text-slate-500 mt-1">
+            Select both filters above to view fee records.
+        </p>
+
+    </div>
+
+{% endif %}
+
+{% endblock %}

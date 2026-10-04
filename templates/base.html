@@ -114,9 +114,14 @@
 
                 <!-- Fees -->
                 <a
-                    href="#"
-                    class="block px-4 py-3 rounded-lg hover:bg-blue-800 mb-2">
-
+                    href="{% url "fees:fee_list" %}"
+                    class="block px-4 py-3 rounded-lg hover:bg-blue-800 mb-2
+                    {% if request.resolver_match.url_name == 'fee_list' %}
+                        bg-blue-800
+                    {% else %}
+                        hover:bg-blue-800
+                    {% endif %}">
+                    
                     <i class="fa fa-credit-card mr-2"
                        style="font-size:20px"
                        aria-hidden="true"></i>
@@ -128,8 +133,13 @@
 
                 <!-- Payments -->
                 <a
-                    href="#"
-                    class="block px-4 py-3 rounded-lg hover:bg-blue-800 mb-2">
+                    href="{% url "payments:payment_list" %}"
+                    class="block px-4 py-3 rounded-lg hover:bg-blue-800 mb-2
+                    {% if request.resolver_match.url_name == 'payment_list' %}
+                        bg-blue-800
+                    {% else %}
+                        hover:bg-blue-800
+                    {% endif %}">
 
                     <i class="fa fa-money mr-2"
                        style="font-size:20px"

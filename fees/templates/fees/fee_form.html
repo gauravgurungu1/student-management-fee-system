@@ -1,0 +1,347 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+{% if form.instance.pk %}
+    Edit Fee
+{% else %}
+    Create Fee
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<!-- Page Header -->
+<div class="mb-6">
+
+    <h2 class="text-2xl font-bold text-slate-800">
+
+        {% if form.instance.pk %}
+            Edit Fee
+        {% else %}
+            Create Fee
+        {% endif %}
+
+    </h2>
+
+    <p class="text-slate-500 mt-1">
+
+        {% if form.instance.pk %}
+            Update the fee information below.
+        {% else %}
+            Create a new fee record for a student.
+        {% endif %}
+
+    </p>
+
+</div>
+
+
+<!-- Fee Form Card -->
+<div class="bg-white rounded-xl border border-slate-200 shadow-sm
+            max-w-3xl overflow-hidden">
+
+
+    <!-- Card Header -->
+    <div class="p-5 sm:p-6 border-b border-slate-200">
+
+        <h3 class="text-lg font-semibold text-slate-800">
+            Fee Information
+        </h3>
+
+        <p class="text-sm text-slate-500 mt-1">
+            Enter the fee details below.
+        </p>
+
+        <p class="text-xs text-slate-400 mt-2">
+            Paid amount will be managed through the payment system.
+        </p>
+
+    </div>
+
+
+    <!-- Form -->
+    <form method="post" class="p-5 sm:p-6">
+
+        {% csrf_token %}
+
+
+        <!-- General Form Errors -->
+        {% if form.non_field_errors %}
+
+        <div class="mb-6 rounded-lg border border-red-200
+                    bg-red-50 p-4">
+
+            <div class="flex items-start gap-3">
+
+                <i class="fa fa-exclamation-circle text-red-600 mt-0.5"
+                   aria-hidden="true"></i>
+
+                <div>
+
+                    <p class="text-sm font-medium text-red-800">
+                        Please correct the following errors:
+                    </p>
+
+                    <ul class="mt-1 text-sm text-red-700
+                               list-disc list-inside">
+
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+
+
+            <!-- Student -->
+            <div class="md:col-span-2">
+
+                <label for="{{ form.student.id_for_label }}"
+                       class="block text-sm font-medium
+                              text-slate-700 mb-2">
+
+                    Student
+                    <span class="text-red-500">*</span>
+
+                </label>
+
+                {{ form.student }}
+
+                {% if form.student.errors %}
+
+                <div class="mt-2 text-sm text-red-600">
+
+                    {% for error in form.student.errors %}
+
+                    <p class="flex items-start gap-1.5">
+
+                        <i class="fa fa-exclamation-circle mt-0.5"
+                           aria-hidden="true"></i>
+
+                        <span>{{ error }}</span>
+
+                    </p>
+
+                    {% endfor %}
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- Fee Title -->
+            <div>
+
+                <label for="{{ form.title.id_for_label }}"
+                       class="block text-sm font-medium
+                              text-slate-700 mb-2">
+
+                    Fee Title
+                    <span class="text-red-500">*</span>
+
+                </label>
+
+                {{ form.title }}
+
+                {% if form.title.errors %}
+
+                <div class="mt-2 text-sm text-red-600">
+
+                    {% for error in form.title.errors %}
+
+                    <p class="flex items-start gap-1.5">
+
+                        <i class="fa fa-exclamation-circle mt-0.5"
+                           aria-hidden="true"></i>
+
+                        <span>{{ error }}</span>
+
+                    </p>
+
+                    {% endfor %}
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- Amount -->
+            <div>
+
+                <label for="{{ form.amount.id_for_label }}"
+                       class="block text-sm font-medium
+                              text-slate-700 mb-2">
+
+                    Fee Amount
+                    <span class="text-red-500">*</span>
+
+                </label>
+
+                {{ form.amount }}
+
+                {% if form.amount.errors %}
+
+                <div class="mt-2 text-sm text-red-600">
+
+                    {% for error in form.amount.errors %}
+
+                    <p class="flex items-start gap-1.5">
+
+                        <i class="fa fa-exclamation-circle mt-0.5"
+                           aria-hidden="true"></i>
+
+                        <span>{{ error }}</span>
+
+                    </p>
+
+                    {% endfor %}
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- Due Date -->
+            <div>
+
+                <label for="{{ form.due_date.id_for_label }}"
+                       class="block text-sm font-medium
+                              text-slate-700 mb-2">
+
+                    Due Date
+                    <span class="text-red-500">*</span>
+
+                </label>
+
+                {{ form.due_date }}
+
+                {% if form.due_date.errors %}
+
+                <div class="mt-2 text-sm text-red-600">
+
+                    {% for error in form.due_date.errors %}
+
+                    <p class="flex items-start gap-1.5">
+
+                        <i class="fa fa-exclamation-circle mt-0.5"
+                           aria-hidden="true"></i>
+
+                        <span>{{ error }}</span>
+
+                    </p>
+
+                    {% endfor %}
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- Status -->
+            <div>
+
+                <label for="{{ form.status.id_for_label }}"
+                       class="block text-sm font-medium
+                              text-slate-700 mb-2">
+
+                    Status
+                    <span class="text-red-500">*</span>
+
+                </label>
+
+                {{ form.status }}
+
+                {% if form.status.errors %}
+
+                <div class="mt-2 text-sm text-red-600">
+
+                    {% for error in form.status.errors %}
+
+                    <p class="flex items-start gap-1.5">
+
+                        <i class="fa fa-exclamation-circle mt-0.5"
+                           aria-hidden="true"></i>
+
+                        <span>{{ error }}</span>
+
+                    </p>
+
+                    {% endfor %}
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- Buttons -->
+        <div class="flex flex-col-reverse sm:flex-row
+                    items-stretch sm:items-center justify-end
+                    gap-3 mt-8 pt-6 border-t border-slate-200">
+
+
+            <a
+                href="{% url 'fees:fee_list' %}"
+                class="inline-flex items-center justify-center gap-2
+                       px-4 py-2.5 border border-slate-200
+                       rounded-lg text-slate-600 font-medium
+                       hover:bg-slate-50 transition
+                       focus:outline-none focus:ring-2
+                       focus:ring-slate-300"
+            >
+
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+
+                Cancel
+
+            </a>
+
+
+            <button
+                type="submit"
+                class="inline-flex items-center justify-center gap-2
+                       px-5 py-2.5 bg-blue-900 text-white
+                       rounded-lg font-medium
+                       hover:bg-blue-800 transition
+                       focus:outline-none focus:ring-2
+                       focus:ring-blue-500 focus:ring-offset-2"
+            >
+
+                <i class="fa fa-save" aria-hidden="true"></i>
+
+                {% if form.instance.pk %}
+                    Update Fee
+                {% else %}
+                    Save Fee
+                {% endif %}
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

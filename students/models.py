@@ -15,6 +15,8 @@ class Student(models.Model):
         on_delete=models.PROTECT,
         related_name="students",
     )
+    
+    batch = models.PositiveSmallIntegerField()
 
     def __str__(self):
         return self.name
