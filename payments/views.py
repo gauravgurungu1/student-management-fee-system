@@ -2,8 +2,10 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import PaymentForm
 from .models import Payment
+from accounts.decorators import admin_required
 
 
+@admin_required
 def payment_list(request):
     payments = Payment.objects.select_related(
         "fee",
@@ -17,6 +19,7 @@ def payment_list(request):
     return render(request, "payments/payment_list.html", context)
 
 
+@admin_required
 def payment_detail(request, payment_id):
     payment = get_object_or_404(
         Payment.objects.select_related(
@@ -33,6 +36,7 @@ def payment_detail(request, payment_id):
     return render(request, "payments/payment_detail.html", context)
 
 
+@admin_required
 def payment_create(request):
     fee_id = request.GET.get("fee")
 
@@ -59,6 +63,7 @@ def payment_create(request):
     )
 
 
+@admin_required
 def payment_update(request, payment_id):
     payment = get_object_or_404(Payment, id=payment_id)
 
@@ -82,6 +87,7 @@ def payment_update(request, payment_id):
     return render(request, "payments/payment_form.html", context)
 
 
+@admin_required
 def payment_delete(request, payment_id):
     payment = get_object_or_404(Payment, id=payment_id)
 

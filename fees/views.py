@@ -1,10 +1,13 @@
 from django.shortcuts import get_object_or_404, redirect, render
+
 from .forms import FeeForm
 from .models import Fee
 from academics.models import Course
 from students.models import Student
+from accounts.decorators import admin_required
 
 
+@admin_required
 def fee_list(request):
     course_id = request.GET.get("course")
     batch = request.GET.get("batch")
@@ -40,6 +43,7 @@ def fee_list(request):
     return render(request, "fees/fee_list.html", context)
 
 
+@admin_required
 def fee_detail(request, fee_id):
     fee = get_object_or_404(
         Fee.objects.select_related("student"),
@@ -53,6 +57,7 @@ def fee_detail(request, fee_id):
     return render(request, "fees/fee_detail.html", context)
 
 
+@admin_required
 def fee_create(request):
     if request.method == "POST":
         form = FeeForm(request.POST)
@@ -69,6 +74,8 @@ def fee_create(request):
 
     return render(request, "fees/fee_form.html", context)
 
+
+@admin_required
 def fee_update(request, fee_id):
     fee = get_object_or_404(Fee, id=fee_id)
 
@@ -88,6 +95,8 @@ def fee_update(request, fee_id):
 
     return render(request, "fees/fee_form.html", context)
 
+
+@admin_required
 def fee_delete(request, fee_id):
     fee = get_object_or_404(Fee, id=fee_id)
 

@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from .models import Course, Subject
 from .forms import CourseForm, SubjectForm
+from accounts.decorators import admin_required
 
 
 # =========================
@@ -9,6 +10,7 @@ from .forms import CourseForm, SubjectForm
 # =========================
 
 # READ - Show all courses
+@admin_required
 def course_list(request):
     courses = Course.objects.all()
     return render(
@@ -19,6 +21,7 @@ def course_list(request):
 
 
 # CREATE - Add a new course
+@admin_required
 def course_create(request):
     if request.method == 'POST':
         form = CourseForm(request.POST)
@@ -37,6 +40,7 @@ def course_create(request):
 
 
 # UPDATE - Edit an existing course
+@admin_required
 def course_update(request, id):
     course = get_object_or_404(Course, id=id)
 
@@ -57,6 +61,7 @@ def course_update(request, id):
 
 
 # DELETE - Delete an existing course
+@admin_required
 def course_delete(request, id):
     course = get_object_or_404(Course, id=id)
 
@@ -76,6 +81,7 @@ def course_delete(request, id):
 # =========================
 
 # READ - Show all subjects
+@admin_required
 def subject_list(request):
     subjects = Subject.objects.select_related('course').all()
 
@@ -87,6 +93,7 @@ def subject_list(request):
 
 
 # CREATE - Add a new subject
+@admin_required
 def subject_create(request):
     if request.method == 'POST':
         form = SubjectForm(request.POST)
@@ -105,6 +112,7 @@ def subject_create(request):
 
 
 # UPDATE - Edit an existing subject
+@admin_required
 def subject_update(request, id):
     subject = get_object_or_404(Subject, id=id)
 
@@ -125,6 +133,7 @@ def subject_update(request, id):
 
 
 # DELETE - Delete an existing subject
+@admin_required
 def subject_delete(request, id):
     subject = get_object_or_404(Subject, id=id)
 

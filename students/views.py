@@ -3,9 +3,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from academics.models import Course
 from .models import Student
 from .forms import StudentForm
+from accounts.decorators import admin_required
 
 
 # READ - Show all students (with optional search + course filter)
+@admin_required
 def student_list(request):
     students = Student.objects.select_related('course').all()
 
@@ -37,6 +39,7 @@ def student_list(request):
 
 
 # CREATE - Add a new student
+@admin_required
 def student_create(request):
     if request.method == "POST":
         form = StudentForm(request.POST)
@@ -53,6 +56,7 @@ def student_create(request):
 
 
 # UPDATE - Edit an existing student
+@admin_required
 def student_update(request, id):
     student = get_object_or_404(Student, id=id)
 
@@ -68,6 +72,7 @@ def student_update(request, id):
 
 
 # DELETE - Delete a student
+@admin_required
 def student_delete(request, id):
     student = get_object_or_404(Student, id=id)
 

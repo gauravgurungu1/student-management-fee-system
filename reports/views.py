@@ -3,8 +3,10 @@ from django.shortcuts import render
 
 from academics.models import Course, Subject
 from students.models import Student
+from accounts.decorators import admin_required
 
 
+@admin_required
 def report_dashboard(request):
     """
     Reports dashboard with summary statistics,

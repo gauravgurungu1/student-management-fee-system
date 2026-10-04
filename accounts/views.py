@@ -1,47 +1,13 @@
-from functools import wraps
-
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 
 from academics.models import Course
 from students.models import Student
 
+from .decorators import admin_required, teacher_required
 from .models import Teacher
-
-
-def teacher_required(view_func):
-    @wraps(view_func)
-    @login_required
-    def wrapper(request, *args, **kwargs):
-        if not hasattr(request.user, "teacher_profile"):
-            messages.error(
-                request,
-                "You do not have permission to access the teacher area.",
-            )
-            return redirect("dashboard")
-
-        return view_func(request, *args, **kwargs)
-
-    return wrapper
-
-
-def admin_required(view_func):
-    @wraps(view_func)
-    @login_required
-    def wrapper(request, *args, **kwargs):
-        if hasattr(request.user, "teacher_profile"):
-            messages.error(
-                request,
-                "You do not have permission to access the administrator area.",
-            )
-            return redirect("teacher_dashboard")
-
-        return view_func(request, *args, **kwargs)
-
-    return wrapper
 
 
 # =========================
@@ -210,6 +176,7 @@ def teacher_login(request):
             request,
             "You are already logged in as an administrator.",
         )
+
         return redirect("dashboard")
 
     if request.method == "POST":
