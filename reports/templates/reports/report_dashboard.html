@@ -15,15 +15,15 @@
         </h1>
 
         <p class="text-sm text-slate-500 mt-1">
-            Overview of students, courses, and subjects
+            Overview of students, courses, teachers, and attendance
         </p>
     </div>
 
 
     <!-- Summary Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 
-        <!-- Total Students -->
+        <!-- Students -->
         <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
             <div class="flex items-center justify-between">
 
@@ -37,19 +37,37 @@
                     </p>
                 </div>
 
-                <div class="w-12 h-12 rounded-lg bg-blue-100
-                            text-blue-700 flex items-center justify-center">
-
-                    <i class="fa fa-users text-xl"
-                       aria-hidden="true"></i>
-
+                <div class="w-12 h-12 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center">
+                    <i class="fa fa-users text-xl" aria-hidden="true"></i>
                 </div>
 
             </div>
         </div>
 
 
-        <!-- Total Courses -->
+        <!-- Teachers -->
+        <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+            <div class="flex items-center justify-between">
+
+                <div>
+                    <p class="text-sm text-slate-500">
+                        Total Teachers
+                    </p>
+
+                    <p class="text-3xl font-bold text-slate-800 mt-2">
+                        {{ total_teachers }}
+                    </p>
+                </div>
+
+                <div class="w-12 h-12 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center">
+                    <i class="fa fa-user text-xl" aria-hidden="true"></i>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- Courses -->
         <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
             <div class="flex items-center justify-between">
 
@@ -63,19 +81,15 @@
                     </p>
                 </div>
 
-                <div class="w-12 h-12 rounded-lg bg-indigo-100
-                            text-indigo-700 flex items-center justify-center">
-
-                    <i class="fa fa-graduation-cap text-xl"
-                       aria-hidden="true"></i>
-
+                <div class="w-12 h-12 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center">
+                    <i class="fa fa-graduation-cap text-xl" aria-hidden="true"></i>
                 </div>
 
             </div>
         </div>
 
 
-        <!-- Total Subjects -->
+        <!-- Subjects -->
         <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
             <div class="flex items-center justify-between">
 
@@ -89,12 +103,8 @@
                     </p>
                 </div>
 
-                <div class="w-12 h-12 rounded-lg bg-purple-100
-                            text-purple-700 flex items-center justify-center">
-
-                    <i class="fa fa-book text-xl"
-                       aria-hidden="true"></i>
-
+                <div class="w-12 h-12 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center">
+                    <i class="fa fa-book text-xl" aria-hidden="true"></i>
                 </div>
 
             </div>
@@ -103,17 +113,137 @@
     </div>
 
 
-    <!-- Course-wise Student Summary -->
+    <!-- Charts -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        <!-- Students by Course -->
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm">
+
+            <div class="p-5 border-b border-slate-200">
+
+                <h2 class="text-lg font-semibold text-slate-800">
+                    Students by Course
+                </h2>
+
+                <p class="text-sm text-slate-500 mt-1">
+                    Number of students enrolled in each course
+                </p>
+
+            </div>
+
+            <div class="p-5">
+
+                {% if course_chart_labels %}
+
+                    <div class="h-72">
+                        <canvas id="courseChart"></canvas>
+                    </div>
+
+                {% else %}
+
+                    <div class="h-72 flex items-center justify-center text-slate-400">
+
+                        <div class="text-center">
+
+                            <i class="fa fa-bar-chart text-3xl mb-3"></i>
+
+                            <p>
+                                No course data available.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- Attendance Overview -->
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm">
+
+            <div class="p-5 border-b border-slate-200">
+
+                <h2 class="text-lg font-semibold text-slate-800">
+                    Attendance Overview
+                </h2>
+
+                <p class="text-sm text-slate-500 mt-1">
+                    Overall present and absent attendance records
+                </p>
+
+            </div>
+
+            <div class="p-5">
+
+                <div class="grid grid-cols-3 gap-3 mb-5">
+
+                    <div class="bg-slate-50 rounded-lg p-3 text-center">
+
+                        <p class="text-xs text-slate-500">
+                            Present
+                        </p>
+
+                        <p class="text-xl font-bold text-emerald-600 mt-1">
+                            {{ total_present }}
+                        </p>
+
+                    </div>
+
+
+                    <div class="bg-slate-50 rounded-lg p-3 text-center">
+
+                        <p class="text-xs text-slate-500">
+                            Absent
+                        </p>
+
+                        <p class="text-xl font-bold text-red-600 mt-1">
+                            {{ total_absent }}
+                        </p>
+
+                    </div>
+
+
+                    <div class="bg-slate-50 rounded-lg p-3 text-center">
+
+                        <p class="text-xs text-slate-500">
+                            Attendance
+                        </p>
+
+                        <p class="text-xl font-bold text-blue-700 mt-1">
+                            {{ attendance_percentage }}%
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="h-56 flex justify-center">
+                    <canvas id="attendanceChart"></canvas>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Course Summary Table -->
     <div class="bg-white rounded-xl border border-slate-200 shadow-sm">
 
         <div class="p-5 border-b border-slate-200">
 
             <h2 class="text-lg font-semibold text-slate-800">
-                Students by Course
+                Course Summary
             </h2>
 
             <p class="text-sm text-slate-500 mt-1">
-                Number of students enrolled in each course
+                Student enrollment by course
             </p>
 
         </div>
@@ -126,6 +256,7 @@
                 <thead class="bg-slate-50 border-b border-slate-200">
 
                     <tr>
+
                         <th class="text-left px-5 py-3 font-semibold text-slate-600">
                             Course
                         </th>
@@ -137,6 +268,7 @@
                         <th class="text-left px-5 py-3 font-semibold text-slate-600">
                             Students
                         </th>
+
                     </tr>
 
                 </thead>
@@ -158,15 +290,8 @@
 
                         <td class="px-5 py-4">
 
-                            <span class="inline-flex items-center
-                                         px-2.5 py-1
-                                         rounded-full
-                                         bg-blue-100
-                                         text-blue-700
-                                         font-medium">
-
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 font-medium">
                                 {{ course.student_count }}
-
                             </span>
 
                         </td>
@@ -176,12 +301,13 @@
                     {% empty %}
 
                     <tr>
-                        <td colspan="3"
+
+                        <td
+                            colspan="3"
                             class="px-5 py-8 text-center text-slate-500">
-
                             No courses available.
-
                         </td>
+
                     </tr>
 
                     {% endfor %}
@@ -195,165 +321,31 @@
     </div>
 
 
-    <!-- Student Filters -->
+    <!-- Recent Attendance -->
     <div class="bg-white rounded-xl border border-slate-200 shadow-sm">
 
         <div class="p-5 border-b border-slate-200">
 
-            <h2 class="text-lg font-semibold text-slate-800">
-                Student Report
-            </h2>
-
-            <p class="text-sm text-slate-500 mt-1">
-                Search and filter students
-            </p>
-
-        </div>
-
-
-        <form method="get" class="p-5">
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-
-                <!-- Search -->
-                <div>
-
-                    <label
-                        for="search"
-                        class="block text-sm font-medium text-slate-700 mb-1">
-
-                        Search Student
-
-                    </label>
-
-                    <input
-                        type="text"
-                        id="search"
-                        name="search"
-                        value="{{ search_query }}"
-                        placeholder="Name or email"
-                        class="w-full px-3 py-2.5
-                               border border-slate-300
-                               rounded-lg
-                               outline-none
-                               focus:ring-2
-                               focus:ring-blue-500
-                               focus:border-blue-500">
-
-                </div>
-
-
-                <!-- Course -->
-                <div>
-
-                    <label
-                        for="course"
-                        class="block text-sm font-medium text-slate-700 mb-1">
-
-                        Course
-
-                    </label>
-
-                    <select
-                        id="course"
-                        name="course"
-                        class="w-full px-3 py-2.5
-                               border border-slate-300
-                               rounded-lg
-                               outline-none
-                               focus:ring-2
-                               focus:ring-blue-500
-                               focus:border-blue-500">
-
-                        <option value="">
-                            All Courses
-                        </option>
-
-                        {% for course in courses %}
-
-                        <option
-                            value="{{ course.id }}"
-                            {% if selected_course == course.id|stringformat:"s" %}
-                                selected
-                            {% endif %}>
-
-                            {{ course.name }}
-
-                        </option>
-
-                        {% endfor %}
-
-                    </select>
-
-                </div>
-
-
-                <!-- Buttons -->
-                <div class="flex items-end gap-2">
-
-                    <button
-                        type="submit"
-                        class="px-5 py-2.5
-                               rounded-lg
-                               bg-blue-900
-                               text-white
-                               font-medium
-                               hover:bg-blue-800">
-
-                        <i class="fa fa-search mr-1"
-                           aria-hidden="true"></i>
-
-                        Search
-
-                    </button>
-
-
-                    <a
-                        href="{% url 'report_dashboard' %}"
-                        class="px-5 py-2.5
-                               rounded-lg
-                               border border-slate-300
-                               text-slate-700
-                               font-medium
-                               hover:bg-slate-100">
-
-                        Reset
-
-                    </a>
-
-                </div>
-
-            </div>
-
-        </form>
-
-    </div>
-
-
-    <!-- Student Results -->
-    <div class="bg-white rounded-xl border border-slate-200 shadow-sm">
-
-        <div class="p-5 border-b border-slate-200">
-
-            <div class="flex items-center justify-between gap-3">
+            <div class="flex items-center justify-between">
 
                 <div>
+
                     <h2 class="text-lg font-semibold text-slate-800">
-                        Student Results
+                        Recent Attendance
                     </h2>
 
                     <p class="text-sm text-slate-500 mt-1">
-                        {% if filters_applied %}
-                            Filtered student results
-                        {% else %}
-                            All students
-                        {% endif %}
+                        Latest attendance sessions recorded by teachers
                     </p>
+
                 </div>
 
-                <span class="text-sm text-slate-500">
-                    {{ students|length }} student{{ students|length|pluralize }}
-                </span>
+
+                <div class="w-10 h-10 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center">
+
+                    <i class="fa fa-calendar-check-o"></i>
+
+                </div>
 
             </div>
 
@@ -369,19 +361,27 @@
                     <tr>
 
                         <th class="text-left px-5 py-3 font-semibold text-slate-600">
-                            Name
+                            Date
                         </th>
 
                         <th class="text-left px-5 py-3 font-semibold text-slate-600">
-                            Email
-                        </th>
-
-                        <th class="text-left px-5 py-3 font-semibold text-slate-600">
-                            Phone
+                            Subject
                         </th>
 
                         <th class="text-left px-5 py-3 font-semibold text-slate-600">
                             Course
+                        </th>
+
+                        <th class="text-left px-5 py-3 font-semibold text-slate-600">
+                            Batch
+                        </th>
+
+                        <th class="text-left px-5 py-3 font-semibold text-slate-600">
+                            Teacher
+                        </th>
+
+                        <th class="text-left px-5 py-3 font-semibold text-slate-600">
+                            Attendance
                         </th>
 
                     </tr>
@@ -391,47 +391,87 @@
 
                 <tbody class="divide-y divide-slate-100">
 
-                    {% for student in students %}
+                    {% for session in recent_sessions %}
 
                     <tr class="hover:bg-slate-50">
 
-                        <td class="px-5 py-4 font-medium text-slate-800">
-                            {{ student.name }}
+                        <td class="px-5 py-4 text-slate-700">
+                            {{ session.date|date:"M d, Y" }}
                         </td>
 
-                        <td class="px-5 py-4 text-slate-600">
-                            {{ student.email }}
+
+                        <td class="px-5 py-4">
+
+                            <div class="font-medium text-slate-800">
+                                {{ session.subject.name }}
+                            </div>
+
+                            <div class="text-xs text-slate-500 mt-1">
+                                {{ session.subject.code }}
+                            </div>
+
                         </td>
 
-                        <td class="px-5 py-4 text-slate-600">
-                            {{ student.phone }}
-                        </td>
 
                         <td class="px-5 py-4 text-slate-600">
-                            {{ student.course.name }}
+                            {{ session.course.name }}
+                        </td>
+
+
+                        <td class="px-5 py-4 text-slate-600">
+                            {{ session.batch }}
+                        </td>
+
+
+                        <td class="px-5 py-4 text-slate-600">
+                            {{ session.teacher.teacher_profile.name }}
+                        </td>
+
+
+                        <td class="px-5 py-4">
+
+                            <div class="flex items-center gap-2">
+
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 font-medium">
+                                    {{ session.present_count }} Present
+                                </span>
+
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full bg-red-100 text-red-600 font-medium">
+                                    {{ session.absent_count }} Absent
+                                </span>
+
+                            </div>
+
+
+                            {% if session.total_count %}
+
+                                <p class="text-xs text-slate-500 mt-1">
+                                    {{ session.total_count }} students
+                                </p>
+
+                            {% endif %}
+
                         </td>
 
                     </tr>
+
 
                     {% empty %}
 
                     <tr>
 
-                        <td
-                            colspan="4"
-                            class="px-5 py-10 text-center">
+                        <td colspan="6" class="px-5 py-10 text-center">
 
                             <div class="text-slate-400">
 
-                                <i class="fa fa-search text-3xl mb-3"
-                                   aria-hidden="true"></i>
+                                <i class="fa fa-calendar-o text-3xl mb-3"></i>
 
                                 <p class="text-slate-600 font-medium">
-                                    No students found
+                                    No attendance records
                                 </p>
 
                                 <p class="text-sm mt-1">
-                                    Try changing your search or course filter.
+                                    Attendance sessions will appear here once teachers record attendance.
                                 </p>
 
                             </div>
@@ -451,5 +491,137 @@
     </div>
 
 </div>
+
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+
+    // Students by Course Chart
+
+    const courseChartCanvas =
+        document.getElementById("courseChart");
+
+    if (courseChartCanvas) {
+
+        const courseLabels =
+            {{ course_chart_labels|safe }};
+
+        const courseData =
+            {{ course_chart_data|safe }};
+
+        new Chart(courseChartCanvas, {
+
+            type: "bar",
+
+            data: {
+
+                labels: courseLabels,
+
+                datasets: [
+                    {
+                        label: "Students",
+
+                        data: courseData,
+
+                        borderWidth: 1,
+
+                        borderRadius: 6
+                    }
+                ]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                plugins: {
+
+                    legend: {
+                        display: false
+                    }
+
+                },
+
+                scales: {
+
+                    y: {
+
+                        beginAtZero: true,
+
+                        ticks: {
+                            precision: 0
+                        }
+
+                    }
+
+                }
+
+            }
+
+        });
+
+    }
+
+
+    // Attendance Chart
+
+    const attendanceChartCanvas =
+        document.getElementById("attendanceChart");
+
+    if (attendanceChartCanvas) {
+
+        const attendanceData =
+            {{ attendance_chart_data|safe }};
+
+        new Chart(attendanceChartCanvas, {
+
+            type: "doughnut",
+
+            data: {
+
+                labels: [
+                    "Present",
+                    "Absent"
+                ],
+
+                datasets: [
+                    {
+                        data: attendanceData,
+
+                        borderWidth: 2
+                    }
+                ]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                cutout: "65%",
+
+                plugins: {
+
+                    legend: {
+                        position: "bottom"
+                    }
+
+                }
+
+            }
+
+        });
+
+    }
+
+</script>
 
 {% endblock %}

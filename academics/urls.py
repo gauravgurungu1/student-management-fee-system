@@ -15,4 +15,30 @@ urlpatterns = [
     path('subjects/add/', views.subject_create, name='subject_create'),
     path('subjects/edit/<int:id>/', views.subject_update, name='subject_update'),
     path('subjects/delete/<int:id>/', views.subject_delete, name='subject_delete'),
+
+    path("rooms/", views.room_list, name="room_list"),
+    path("rooms/add/", views.room_create, name="room_create"),
+    path("rooms/<int:room_id>/edit/", views.room_update, name="room_update"),
+    path("rooms/<int:room_id>/delete/", views.room_delete, name="room_delete"),
+
+    path(
+    "class-schedules/",
+    views.class_schedule_list,
+    name="class_schedule_list",
+    ),
+    path(
+        "class-schedules/add/",
+        views.class_schedule_create,
+        name="class_schedule_create",
+    ),
+    path(
+        "class-schedules/<int:schedule_id>/edit/",
+        views.class_schedule_update,
+        name="class_schedule_update",
+    ),
+    path(
+        "class-schedules/<int:schedule_id>/delete/",
+        views.class_schedule_delete,
+        name="class_schedule_delete",
+),
 ]

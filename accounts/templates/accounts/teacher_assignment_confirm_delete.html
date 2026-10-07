@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="max-w-xl mx-auto">
+
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
+
+        <div class="w-12 h-12 rounded-lg bg-red-100
+                    flex items-center justify-center mb-5">
+
+            <i class="fa fa-exclamation-triangle text-red-600 text-xl"></i>
+
+        </div>
+
+        <h2 class="text-xl font-bold text-slate-800">
+            Remove Teacher Assignment?
+        </h2>
+
+        <p class="text-slate-500 mt-2">
+            This will remove the assignment from the teacher.
+        </p>
+
+
+        <div class="bg-slate-50 rounded-lg p-4 mt-6 space-y-2">
+
+            <p>
+                <span class="font-medium">Teacher:</span>
+                {{ assignment.teacher.name }}
+            </p>
+
+            <p>
+                <span class="font-medium">Course:</span>
+                {{ assignment.subject.course.name }}
+            </p>
+
+            <p>
+                <span class="font-medium">Subject:</span>
+                {{ assignment.subject.name }}
+            </p>
+
+            <p>
+                <span class="font-medium">Batch:</span>
+                {{ assignment.batch }}
+            </p>
+
+        </div>
+
+
+        <form method="POST" class="flex justify-end gap-3 mt-6">
+
+            {% csrf_token %}
+
+            <a
+                href="{% url 'teacher_assignment_list' %}"
+                class="px-5 py-3 rounded-lg
+                       border border-slate-200
+                       text-slate-600
+                       hover:bg-slate-50"
+            >
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                class="px-5 py-3 rounded-lg
+                       bg-red-600 hover:bg-red-700
+                       text-white"
+            >
+                Remove Assignment
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

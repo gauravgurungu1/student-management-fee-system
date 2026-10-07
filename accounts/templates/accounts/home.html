@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Welcome | Student Management System</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    >
+</head>
+
+
+<body class="min-h-screen bg-slate-100 flex items-center justify-center px-4">
+
+    <div class="w-full max-w-3xl">
+
+        <!-- Header -->
+        <div class="text-center mb-10">
+
+            <div
+                class="w-16 h-16 bg-blue-900 text-white
+                       rounded-2xl
+                       flex items-center justify-center
+                       mx-auto mb-5
+                       shadow-sm"
+            >
+                <span class="text-3xl font-bold">
+                    S
+                </span>
+            </div>
+
+
+            <h1 class="text-3xl font-bold text-slate-800">
+                Student Management System
+            </h1>
+
+
+            <p class="mt-2 text-slate-500">
+                Select your portal to continue
+            </p>
+
+        </div>
+
+
+        <!-- Login Options -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+
+            <!-- Administrator -->
+            <a
+                href="{% url 'login' %}"
+                class="group bg-white rounded-2xl
+                       shadow-md
+                       border border-slate-200
+                       p-8
+                       transition
+                       hover:-translate-y-1
+                       hover:shadow-xl
+                       hover:border-blue-300"
+            >
+
+                <div
+                    class="w-14 h-14
+                           bg-blue-50
+                           text-blue-900
+                           rounded-xl
+                           flex items-center justify-center
+                           mb-6
+                           group-hover:bg-blue-900
+                           group-hover:text-white
+                           transition"
+                >
+                    <i class="fa fa-user text-2xl"></i>
+                </div>
+
+
+                <h2 class="text-xl font-bold text-slate-800">
+                    Administrator
+                </h2>
+
+
+                <p class="mt-2 text-sm text-slate-500 leading-relaxed">
+                    Manage students, courses, fees, teachers,
+                    payments, reports and the entire system.
+                </p>
+
+
+                <div
+                    class="mt-6 text-sm font-semibold
+                           text-blue-700
+                           group-hover:text-blue-900"
+                >
+                    Administrator Login
+                    <i class="fa fa-arrow-right ml-1"></i>
+                </div>
+
+            </a>
+
+
+            <!-- Teacher -->
+            <a
+                href="{% url 'teacher_login' %}"
+                class="group bg-white rounded-2xl
+                       shadow-md
+                       border border-slate-200
+                       p-8
+                       transition
+                       hover:-translate-y-1
+                       hover:shadow-xl
+                       hover:border-emerald-300"
+            >
+
+                <div
+                    class="w-14 h-14
+                           bg-emerald-50
+                           text-emerald-700
+                           rounded-xl
+                           flex items-center justify-center
+                           mb-6
+                           group-hover:bg-emerald-600
+                           group-hover:text-white
+                           transition"
+                >
+                    <i class="fa fa-graduation-cap text-2xl"></i>
+                </div>
+
+
+                <h2 class="text-xl font-bold text-slate-800">
+                    Teacher
+                </h2>
+
+
+                <p class="mt-2 text-sm text-slate-500 leading-relaxed">
+                    Access your classes, subjects, schedules
+                    and teacher-specific information.
+                </p>
+
+
+                <div
+                    class="mt-6 text-sm font-semibold
+                           text-emerald-700
+                           group-hover:text-emerald-800"
+                >
+                    Teacher Login
+                    <i class="fa fa-arrow-right ml-1"></i>
+                </div>
+
+            </a>
+
+        </div>
+
+
+        <!-- Footer -->
+        <p class="text-center text-xs text-slate-400 mt-8">
+            Student Management and Fee Payment System
+        </p>
+
+    </div>
+
+</body>
+
+</html>

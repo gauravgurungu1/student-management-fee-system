@@ -1,0 +1,238 @@
+{% extends "teacher_base.html" %}
+
+{% block title %}Attendance{% endblock %}
+
+{% block page_title %}Attendance{% endblock %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto">
+
+    <div class="flex items-center justify-between mb-8">
+
+        <div>
+            <h1 class="text-2xl font-bold text-slate-800">
+                Attendance
+            </h1>
+
+            <p class="text-slate-500 mt-1">
+                Manage attendance for your assigned classes.
+            </p>
+        </div>
+
+        <a
+            href="{% url 'attendance_create' %}"
+            class="inline-flex items-center gap-2
+                   bg-blue-600 hover:bg-blue-700
+                   text-white px-4 py-3
+                   rounded-lg transition"
+        >
+            <i class="fa fa-plus"></i>
+            Mark Attendance
+        </a>
+
+    </div>
+
+
+    <!-- Assigned Classes -->
+
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 mb-8">
+
+        <div class="px-6 py-5 border-b border-slate-200">
+
+            <h2 class="text-lg font-semibold text-slate-800">
+                My Assigned Classes
+            </h2>
+
+            <p class="text-sm text-slate-500 mt-1">
+                These are the subjects and batches you can mark attendance for.
+            </p>
+
+        </div>
+
+
+        <div class="overflow-x-auto">
+
+            <table class="w-full text-left">
+
+                <thead class="bg-slate-50 text-sm text-slate-500">
+
+                    <tr>
+                        <th class="px-6 py-4">
+                            Course
+                        </th>
+
+                        <th class="px-6 py-4">
+                            Subject
+                        </th>
+
+                        <th class="px-6 py-4">
+                            Batch
+                        </th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody class="divide-y divide-slate-100">
+
+                    {% for assignment in assignments %}
+
+                    <tr class="hover:bg-slate-50">
+
+                        <td class="px-6 py-4 text-slate-700">
+                            {{ assignment.subject.course.name }}
+                        </td>
+
+                        <td class="px-6 py-4 font-medium text-slate-800">
+                            {{ assignment.subject.code }}
+                            -
+                            {{ assignment.subject.name }}
+                        </td>
+
+                        <td class="px-6 py-4 text-slate-600">
+                            {{ assignment.batch }}
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+                        <td
+                            colspan="3"
+                            class="px-6 py-8 text-center text-slate-500"
+                        >
+                            You have no assigned classes yet.
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- Previous Attendance -->
+
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200">
+
+        <div class="px-6 py-5 border-b border-slate-200">
+
+            <h2 class="text-lg font-semibold text-slate-800">
+                Attendance History
+            </h2>
+
+        </div>
+
+
+        <div class="overflow-x-auto">
+
+            <table class="w-full text-left">
+
+                <thead class="bg-slate-50 text-sm text-slate-500">
+
+                    <tr>
+                        <th class="px-6 py-4">
+                            Date
+                        </th>
+
+                        <th class="px-6 py-4">
+                            Course
+                        </th>
+
+                        <th class="px-6 py-4">
+                            Subject
+                        </th>
+
+                        <th class="px-6 py-4">
+                            Batch
+                        </th>
+
+                        <th class="px-6 py-4">
+                            Action
+                        </th>
+                        <th class = "px-6 py-4">
+                            Delete
+                        </th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody class="divide-y divide-slate-100">
+
+                    {% for session in sessions %}
+
+                    <tr class="hover:bg-slate-50">
+
+                        <td class="px-6 py-4 text-slate-600">
+                            {{ session.date }}
+                        </td>
+
+                        <td class="px-6 py-4 text-slate-600">
+                            {{ session.course.name }}
+                        </td>
+
+                        <td class="px-6 py-4 font-medium text-slate-800">
+                            {{ session.subject.code }}
+                        </td>
+
+                        <td class="px-6 py-4 text-slate-600">
+                            {{ session.batch }}
+                        </td>
+
+                        <td class="px-6 py-4">
+
+                            <a
+                                href="{% url 'attendance_mark' session.id %}"
+                                class="text-blue-600 hover:text-blue-800"
+                            >
+                                View / Edit
+                            </a>
+
+                            
+                        </td>
+                        <td>
+                        <a
+                        href="{% url 'attendance_delete' session.id %}"
+                        class="px-3 py-2 text-sm rounded-lg bg-red-50 text-red-600 hover:bg-red-100"
+                        >
+                            <i class="fa fa-trash"></i>
+                            Delete
+                        </a>
+                        </td>
+                        
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td
+                            colspan="5"
+                            class="px-6 py-8 text-center text-slate-500"
+                        >
+                            No attendance has been recorded yet.
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

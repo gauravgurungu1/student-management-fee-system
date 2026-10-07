@@ -1,68 +1,895 @@
-{% extends "base.html" %}
+{% load static %}
 
-{% block title %}Teacher Login{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-{% block content %}
+    <title>Teacher Login | Student Management System</title>
 
-<div class="min-h-[70vh] flex items-center justify-center">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body class="min-h-screen bg-gray-100 flex items-center justify-center px-4">
 
     <div class="w-full max-w-md">
 
+        <!-- Header -->
         <div class="text-center mb-8">
-            <h1 class="text-2xl font-bold text-slate-800">
-                Teacher Login
+            <h1 class="text-3xl font-bold text-gray-900">
+                Student Management System
             </h1>
 
-            <p class="text-slate-500 mt-2">
-                Enter your registered phone number.
+            <p class="mt-2 text-gray-500">
+                Teacher Portal
             </p>
         </div>
 
-        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
 
-            <form method="post">
+        <!-- Login Card -->
+        <div class="bg-white rounded-2xl shadow-lg p-8">
 
+            <div class="mb-6">
+                <h2 class="text-2xl font-semibold text-gray-900">
+                    Teacher Login
+                </h2>
+
+                <p class="mt-1 text-sm text-gray-500">
+                    Enter your registered phone number to continue.
+                </p>
+            </div>
+
+
+            <!-- Django Messages -->
+            {% if messages %}
+                <div class="space-y-2 mb-5">
+                    {% for message in messages %}
+                        <div class="rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+
+            <form method="POST" id="teacherLoginForm">
                 {% csrf_token %}
 
-                <div class="mb-6">
+                <!-- Action -->
+                <input
+                    type="hidden"
+                    name="action"
+                    id="action"
+                    value=""
+                >
 
-                    <label class="block text-sm font-medium text-slate-700 mb-2">
+
+                <!-- Phone Number -->
+                <div>
+                    <label
+                        for="phone"
+                        class="block text-sm font-medium text-gray-700 mb-2"
+                    >
                         Phone Number
                     </label>
 
                     <input
                         type="tel"
                         name="phone"
+                        id="phone"
+                        value="{{ phone|default:'' }}"
+                        autocomplete="tel"
                         required
-                        autofocus
-                        class="w-full px-4 py-3 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        class="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                         placeholder="Enter your phone number"
                     >
 
+                    <!-- Phone status -->
+                    <p
+                        id="phoneStatus"
+                        class="hidden mt-2 text-sm"
+                    ></p>
                 </div>
 
+
+                <!-- Password Section -->
+                <div
+                    id="passwordSection"
+                    class="hidden mt-6 pt-6 border-t border-gray-200"
+                >
+
+                    <!-- Login Password -->
+                    <div id="loginPasswordSection">
+
+                        <div class="mb-4">
+                            <h3 class="text-lg font-semibold text-gray-900">
+                                Welcome back
+                            </h3>
+
+                            <p class="text-sm text-gray-500 mt-1">
+                                Enter your password to continue.
+                            </p>
+                        </div>
+
+                        <label
+                            for="password"
+                            class="block text-sm font-medium text-gray-700 mb-2"
+                        >
+                            Password
+                        </label>
+
+                        <div class="relative">
+
+                            <input
+                                type="password"
+                                name="password"
+                                id="password"
+                                autocomplete="current-password"
+                                class="w-full rounded-xl border border-gray-300 px-4 py-3 pr-12 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                                placeholder="Enter your password"
+                            >
+
+                            <button
+                                type="button"
+                                onclick="togglePassword('password', this)"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 text-lg"
+                                aria-label="Show password"
+                            >
+                                 <i class="fa fa-eye"></i>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Create Password -->
+                    <div
+                        id="createPasswordSection"
+                        class="hidden"
+                    >
+
+                        <div class="mb-4">
+                            <h3 class="text-lg font-semibold text-gray-900">
+                                Create your password
+                            </h3>
+
+                            <p class="text-sm text-gray-500 mt-1">
+                                This is your first login. Create a password
+                                with at least 8 characters.
+                            </p>
+                        </div>
+
+
+                        <!-- New Password -->
+                        <div>
+                            <label
+                                for="new_password"
+                                class="block text-sm font-medium text-gray-700 mb-2"
+                            >
+                                Create Password
+                            </label>
+
+                            <div class="relative">
+
+                                <input
+                                    type="password"
+                                    name="new_password"
+                                    id="new_password"
+                                    autocomplete="new-password"
+                                    class="w-full rounded-xl border border-gray-300 px-4 py-3 pr-12 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                                    placeholder="Create a password"
+                                >
+
+                                <button
+                                    type="button"
+                                    onclick="togglePassword('new_password', this)"
+                                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 text-lg"
+                                    aria-label="Show password"
+                                >
+                                     <i class="fa fa-eye"></i>
+                                </button>
+
+                            </div>
+
+                            <!-- Password length -->
+                            <p
+                                id="passwordLength"
+                                class="hidden mt-2 text-xs"
+                            ></p>
+                        </div>
+
+
+                        <!-- Confirm Password -->
+                        <div class="mt-4">
+
+                            <label
+                                for="confirm_password"
+                                class="block text-sm font-medium text-gray-700 mb-2"
+                            >
+                                Confirm Password
+                            </label>
+
+                            <div class="relative">
+
+                                <input
+                                    type="password"
+                                    name="confirm_password"
+                                    id="confirm_password"
+                                    autocomplete="new-password"
+                                    class="w-full rounded-xl border border-gray-300 px-4 py-3 pr-12 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                                    placeholder="Confirm your password"
+                                >
+
+                                <button
+                                    type="button"
+                                    onclick="togglePassword('confirm_password', this)"
+                                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 text-lg"
+                                    aria-label="Show password"
+                                >
+                                     <i class="fa fa-eye"></i>
+                                </button>
+
+                            </div>
+
+                            <!-- Password match -->
+                            <p
+                                id="passwordMatch"
+                                class="hidden mt-2 text-xs"
+                            ></p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Submit Button -->
                 <button
                     type="submit"
-                    class="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium"
+                    id="submitButton"
+                    disabled
+                    class="w-full mt-6 rounded-xl bg-blue-600 px-4 py-3 font-semibold text-white transition hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
                 >
                     Continue
                 </button>
 
             </form>
 
+
+            <!-- Admin Login -->
+            <div class="mt-6 text-center">
+
+                <p class="text-sm text-gray-500">
+                    Administrator?
+                    <a
+                        href="{% url 'login' %}"
+                        class="font-medium text-blue-600 hover:text-blue-700"
+                    >
+                        Login here
+                    </a>
+                </p>
+
+            </div>
+
         </div>
 
-        <div class="text-center mt-4">
-            <a
-                href="{% url 'login' %}"
-                class="text-sm text-blue-600 hover:text-blue-700"
-            >
-                Administrator Login
-            </a>
-        </div>
+
+        <!-- Footer -->
+        <p class="text-center text-xs text-gray-400 mt-6">
+            Student Management System
+        </p>
 
     </div>
 
-</div>
 
-{% endblock %}
+    <script>
+
+        const phoneInput = document.getElementById("phone");
+
+        const phoneStatus = document.getElementById("phoneStatus");
+
+        const passwordSection =
+            document.getElementById("passwordSection");
+
+        const loginPasswordSection =
+            document.getElementById("loginPasswordSection");
+
+        const createPasswordSection =
+            document.getElementById("createPasswordSection");
+
+        const passwordInput =
+            document.getElementById("password");
+
+        const newPasswordInput =
+            document.getElementById("new_password");
+
+        const confirmPasswordInput =
+            document.getElementById("confirm_password");
+
+        const passwordMatch =
+            document.getElementById("passwordMatch");
+
+        const passwordLength =
+            document.getElementById("passwordLength");
+
+        const submitButton =
+            document.getElementById("submitButton");
+
+        const actionInput =
+            document.getElementById("action");
+
+        const form =
+            document.getElementById("teacherLoginForm");
+
+
+        let debounceTimer = null;
+
+        let phoneRequestNumber = 0;
+
+        let teacherRegistered = false;
+
+        let teacherPasswordSet = false;
+
+
+        /*
+        --------------------------------
+        SHOW / HIDE PASSWORD
+        --------------------------------
+        */
+
+        function togglePassword(inputId, button) {
+        const input = document.getElementById(inputId);
+        const icon = button.querySelector("i");
+
+        if (input.type === "password") {
+            input.type = "text";
+
+            icon.classList.remove("fa-eye");
+            icon.classList.add("fa-eye-slash");
+
+            button.setAttribute("aria-label", "Hide password");
+        } else {
+            input.type = "password";
+
+            icon.classList.remove("fa-eye-slash");
+            icon.classList.add("fa-eye");
+
+            button.setAttribute("aria-label", "Show password");
+        }
+    }
+
+
+        /*
+        --------------------------------
+        RESET PASSWORD SECTION
+        --------------------------------
+        */
+
+        function resetPasswordSection() {
+
+            passwordSection.classList.add("hidden");
+
+            loginPasswordSection.classList.add("hidden");
+
+            createPasswordSection.classList.add("hidden");
+
+            passwordInput.required = false;
+
+            newPasswordInput.required = false;
+
+            confirmPasswordInput.required = false;
+
+            passwordInput.disabled = true;
+
+            newPasswordInput.disabled = true;
+
+            confirmPasswordInput.disabled = true;
+
+            submitButton.disabled = true;
+
+            submitButton.textContent = "Continue";
+
+            actionInput.value = "";
+
+            passwordMatch.classList.add("hidden");
+
+            passwordLength.classList.add("hidden");
+        }
+
+
+        /*
+        --------------------------------
+        SHOW LOGIN
+        --------------------------------
+        */
+
+        function showLogin() {
+
+            teacherRegistered = true;
+
+            teacherPasswordSet = true;
+
+            passwordSection.classList.remove("hidden");
+
+            loginPasswordSection.classList.remove("hidden");
+
+            createPasswordSection.classList.add("hidden");
+
+            passwordInput.disabled = false;
+
+            passwordInput.required = true;
+
+            newPasswordInput.disabled = true;
+
+            newPasswordInput.required = false;
+
+            confirmPasswordInput.disabled = true;
+
+            confirmPasswordInput.required = false;
+
+            submitButton.disabled = false;
+
+            submitButton.textContent = "Login";
+
+            actionInput.value = "login";
+
+            phoneStatus.textContent =
+                "✓ Teacher account found.";
+
+            phoneStatus.className =
+                "mt-2 text-sm text-green-600";
+        }
+
+
+        /*
+        --------------------------------
+        SHOW CREATE PASSWORD
+        --------------------------------
+        */
+
+        function showCreatePassword() {
+
+            teacherRegistered = true;
+
+            teacherPasswordSet = false;
+
+            passwordSection.classList.remove("hidden");
+
+            loginPasswordSection.classList.add("hidden");
+
+            createPasswordSection.classList.remove("hidden");
+
+            passwordInput.disabled = true;
+
+            passwordInput.required = false;
+
+            newPasswordInput.disabled = false;
+
+            newPasswordInput.required = true;
+
+            confirmPasswordInput.disabled = false;
+
+            confirmPasswordInput.required = true;
+
+            submitButton.disabled = true;
+
+            submitButton.textContent =
+                "Create Password";
+
+            actionInput.value =
+                "create_password";
+
+            phoneStatus.textContent =
+                "✓ Teacher account found. Please create your password.";
+
+            phoneStatus.className =
+                "mt-2 text-sm text-green-600";
+        }
+
+
+        /*
+        --------------------------------
+        PHONE CHECK
+        --------------------------------
+        */
+
+        phoneInput.addEventListener(
+            "input",
+            function () {
+
+                clearTimeout(debounceTimer);
+
+                const phone =
+                    phoneInput.value.trim();
+
+                resetPasswordSection();
+
+                teacherRegistered = false;
+
+                teacherPasswordSet = false;
+
+                phoneStatus.classList.add("hidden");
+
+                if (!phone) {
+                    return;
+                }
+
+                phoneStatus.classList.remove("hidden");
+
+                phoneStatus.textContent =
+                    "Checking phone number...";
+
+                phoneStatus.className =
+                    "mt-2 text-sm text-gray-500";
+
+
+                const currentRequest =
+                    ++phoneRequestNumber;
+
+
+                debounceTimer =
+                    setTimeout(
+                        async function () {
+
+                            try {
+
+                                const response =
+                                    await fetch(
+                                        "{% url 'check_teacher_phone' %}?phone=" +
+                                        encodeURIComponent(phone)
+                                    );
+
+
+                                /*
+                                Ignore an old response if
+                                the user has already typed
+                                something else.
+                                */
+
+                                if (
+                                    currentRequest !==
+                                    phoneRequestNumber
+                                ) {
+                                    return;
+                                }
+
+
+                                if (!response.ok) {
+
+                                    throw new Error(
+                                        "Phone check failed"
+                                    );
+                                }
+
+
+                                const data =
+                                    await response.json();
+
+
+                                /*
+                                Make sure the phone number
+                                hasn't changed while the
+                                request was running.
+                                */
+
+                                if (
+                                    phoneInput.value.trim() !==
+                                    phone
+                                ) {
+                                    return;
+                                }
+
+
+                                if (!data.registered) {
+
+                                    teacherRegistered =
+                                        false;
+
+                                    passwordSection.classList.add(
+                                        "hidden"
+                                    );
+
+                                    submitButton.disabled =
+                                        true;
+
+                                    submitButton.textContent =
+                                        "Continue";
+
+                                    actionInput.value =
+                                        "";
+
+                                    phoneStatus.textContent =
+                                        "No teacher account found with this phone number.";
+
+                                    phoneStatus.className =
+                                        "mt-2 text-sm text-red-600";
+
+                                    return;
+                                }
+
+
+                                /*
+                                Teacher exists.
+                                */
+
+                                if (data.password_set) {
+
+                                    showLogin();
+
+                                } else {
+
+                                    showCreatePassword();
+
+                                }
+
+                            } catch (error) {
+
+                                if (
+                                    currentRequest !==
+                                    phoneRequestNumber
+                                ) {
+                                    return;
+                                }
+
+                                teacherRegistered =
+                                    false;
+
+                                resetPasswordSection();
+
+                                phoneStatus.textContent =
+                                    "Unable to check the phone number. Please try again.";
+
+                                phoneStatus.className =
+                                    "mt-2 text-sm text-red-600";
+                            }
+
+                        },
+                        400
+                    );
+
+            }
+        );
+
+
+        /*
+        --------------------------------
+        PASSWORD LENGTH
+        --------------------------------
+        */
+
+        newPasswordInput.addEventListener(
+            "input",
+            function () {
+
+                const password =
+                    newPasswordInput.value;
+
+                if (!password) {
+
+                    passwordLength.classList.add(
+                        "hidden"
+                    );
+
+                } else if (password.length < 8) {
+
+                    passwordLength.classList.remove(
+                        "hidden"
+                    );
+
+                    passwordLength.textContent =
+                        "Password must contain at least 8 characters.";
+
+                    passwordLength.className =
+                        "mt-2 text-xs text-red-600";
+
+                } else {
+
+                    passwordLength.classList.remove(
+                        "hidden"
+                    );
+
+                    passwordLength.textContent =
+                        "✓ Password length is valid.";
+
+                    passwordLength.className =
+                        "mt-2 text-xs text-green-600";
+                }
+
+                checkPasswordMatch();
+
+            }
+        );
+
+
+        /*
+        --------------------------------
+        PASSWORD MATCH
+        --------------------------------
+        */
+
+        confirmPasswordInput.addEventListener(
+            "input",
+            checkPasswordMatch
+        );
+
+
+        newPasswordInput.addEventListener(
+            "input",
+            checkPasswordMatch
+        );
+
+
+        function checkPasswordMatch() {
+
+            if (
+                !newPasswordInput.value &&
+                !confirmPasswordInput.value
+            ) {
+
+                passwordMatch.classList.add(
+                    "hidden"
+                );
+
+                submitButton.disabled = true;
+
+                return;
+            }
+
+
+            passwordMatch.classList.remove(
+                "hidden"
+            );
+
+
+            if (
+                newPasswordInput.value ===
+                confirmPasswordInput.value
+            ) {
+
+                if (
+                    newPasswordInput.value.length >= 8
+                ) {
+
+                    passwordMatch.textContent =
+                        "✓ Passwords match.";
+
+                    passwordMatch.className =
+                        "mt-2 text-xs text-green-600";
+
+                    submitButton.disabled =
+                        false;
+
+                } else {
+
+                    passwordMatch.textContent =
+                        "Password must contain at least 8 characters.";
+
+                    passwordMatch.className =
+                        "mt-2 text-xs text-red-600";
+
+                    submitButton.disabled =
+                        true;
+                }
+
+            } else {
+
+                passwordMatch.textContent =
+                    "Passwords do not match.";
+
+                passwordMatch.className =
+                    "mt-2 text-xs text-red-600";
+
+                submitButton.disabled =
+                    true;
+            }
+        }
+
+
+        /*
+        --------------------------------
+        FORM SUBMISSION
+        --------------------------------
+        */
+
+        form.addEventListener(
+            "submit",
+            function (event) {
+
+                const phone =
+                    phoneInput.value.trim();
+
+
+                if (!teacherRegistered) {
+
+                    event.preventDefault();
+
+                    return;
+                }
+
+
+                /*
+                LOGIN
+                */
+
+                if (
+                    actionInput.value === "login"
+                ) {
+
+                    if (!passwordInput.value) {
+
+                        event.preventDefault();
+
+                        alert(
+                            "Please enter your password."
+                        );
+
+                        passwordInput.focus();
+
+                        return;
+                    }
+                }
+
+
+                /*
+                CREATE PASSWORD
+                */
+
+                if (
+                    actionInput.value ===
+                    "create_password"
+                ) {
+
+                    if (
+                        newPasswordInput.value.length <
+                        8
+                    ) {
+
+                        event.preventDefault();
+
+                        alert(
+                            "Password must contain at least 8 characters."
+                        );
+
+                        newPasswordInput.focus();
+
+                        return;
+                    }
+
+
+                    if (
+                        newPasswordInput.value !==
+                        confirmPasswordInput.value
+                    ) {
+
+                        event.preventDefault();
+
+                        alert(
+                            "Passwords do not match."
+                        );
+
+                        confirmPasswordInput.focus();
+
+                        return;
+                    }
+                }
+
+            }
+        );
+
+
+        /*
+        --------------------------------
+        INITIAL STATE
+        --------------------------------
+        */
+
+        resetPasswordSection();
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,117 @@
+{% extends base_template %}
+
+{% block title %}Notices{% endblock %}
+
+{% block content %}
+
+<div class="space-y-6">
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-800">Notices</h1>
+            <p class="text-sm text-slate-500 mt-1">
+                View important announcements and updates.
+            </p>
+        </div>
+
+        {% if not request.user.teacher_profile %}
+            <a href="{% url 'notices:notice_create' %}"
+               class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                <i class="fa fa-plus"></i>
+                Create Notice
+            </a>
+        {% endif %}
+    </div>
+
+    <!-- Notices -->
+    {% if notices %}
+
+        <div class="space-y-4">
+
+            {% for notice in notices %}
+
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 hover:shadow-md transition">
+
+                    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+
+                        <div class="min-w-0">
+
+                            <h2 class="text-lg font-semibold text-slate-800">
+                                {{ notice.title }}
+                            </h2>
+
+                            <p class="text-sm text-slate-500 mt-1">
+                                {{ notice.published_at|date:"M d, Y • h:i A" }}
+                            </p>
+
+                        </div>
+
+                        {% if not request.user.teacher_profile %}
+                            <span class="text-xs font-medium px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 whitespace-nowrap">
+                                Admin
+                            </span>
+                        {% endif %}
+
+                    </div>
+
+                    <p class="text-slate-600 mt-4 leading-relaxed">
+                        {{ notice.summary }}
+                    </p>
+
+                    <div class="flex flex-wrap items-center gap-2 mt-5">
+
+                        <a href="{% url 'notices:notice_detail' notice.id %}"
+                           class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition">
+                            <i class="fa fa-eye"></i>
+                            View Notice
+                        </a>
+
+                        {% if not request.user.teacher_profile %}
+
+                            <a href="{% url 'notices:notice_update' notice.id %}"
+                               class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-amber-600 bg-amber-50 rounded-lg hover:bg-amber-100 transition">
+                                <i class="fa fa-pencil"></i>
+                                Edit
+                            </a>
+
+                            <a href="{% url 'notices:notice_delete' notice.id %}"
+                               class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition">
+                                <i class="fa fa-trash"></i>
+                                Delete
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <!-- Empty State -->
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-10 text-center">
+
+            <div class="w-16 h-16 mx-auto rounded-full bg-slate-100 flex items-center justify-center">
+                <i class="fa fa-bell-o text-2xl text-slate-400"></i>
+            </div>
+
+            <h2 class="text-lg font-semibold text-slate-700 mt-4">
+                No notices yet
+            </h2>
+
+            <p class="text-sm text-slate-500 mt-1">
+                There are currently no announcements to display.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

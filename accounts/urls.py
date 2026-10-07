@@ -4,7 +4,11 @@ from . import views
 
 
 urlpatterns = [
-    # Administrator
+
+    # =========================
+    # ADMINISTRATOR
+    # =========================
+
     path(
         "login/",
         views.login_view,
@@ -17,7 +21,11 @@ urlpatterns = [
         name="logout",
     ),
 
-    # Teacher authentication
+
+    # =========================
+    # TEACHER AUTHENTICATION
+    # =========================
+
     path(
         "teacher/login/",
         views.teacher_login,
@@ -25,15 +33,9 @@ urlpatterns = [
     ),
 
     path(
-        "teacher/set-password/",
-        views.teacher_set_password,
-        name="teacher_set_password",
-    ),
-
-    path(
-        "teacher/password-login/",
-        views.teacher_password_login,
-        name="teacher_password_login",
+        "teacher/check-phone/",
+        views.check_teacher_phone,
+        name="check_teacher_phone",
     ),
 
     path(
@@ -42,7 +44,22 @@ urlpatterns = [
         name="teacher_dashboard",
     ),
 
-    # Teacher management
+
+    # =========================
+    # TEACHER SUBJECTS
+    # =========================
+
+    path(
+        "teacher/subjects/",
+        views.teacher_subjects,
+        name="teacher_subjects",
+    ),
+
+
+    # =========================
+    # TEACHER MANAGEMENT
+    # =========================
+
     path(
         "teachers/",
         views.teacher_list,
@@ -53,5 +70,39 @@ urlpatterns = [
         "teachers/add/",
         views.teacher_create,
         name="teacher_create",
+    ),
+
+
+    # =========================
+    # TEACHER ASSIGNMENTS
+    # =========================
+
+    path(
+        "assignments/",
+        views.teacher_assignment_list,
+        name="teacher_assignment_list",
+    ),
+
+    path(
+        "assignments/add/",
+        views.teacher_assignment_create,
+        name="teacher_assignment_create",
+    ),
+
+    path(
+        "assignments/<int:assignment_id>/delete/",
+        views.teacher_assignment_delete,
+        name="teacher_assignment_delete",
+    ),
+
+
+    # =========================
+    # TEACHER CLASSES
+    # =========================
+
+    path(
+        "teacher/classes/",
+        views.teacher_classes,
+        name="teacher_classes",
     ),
 ]

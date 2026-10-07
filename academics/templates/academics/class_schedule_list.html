@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% block title %}Class Schedule{% endblock %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto">
+
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-800">
+                Class Schedule
+            </h1>
+            <p class="text-slate-500 mt-1">
+                Manage the weekly class timetable.
+            </p>
+        </div>
+
+        <a
+            href="{% url 'class_schedule_create' %}"
+            class="inline-flex items-center gap-2 px-5 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+        >
+            <i class="fa fa-plus"></i>
+            Add Class
+        </a>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+
+        {% if schedules %}
+
+            <div class="overflow-x-auto">
+
+                <table class="w-full">
+
+                    <thead class="bg-slate-50 border-b border-slate-200">
+                        <tr>
+
+                            <th class="text-left px-6 py-4 text-sm font-semibold text-slate-600">
+                                Day
+                            </th>
+
+                            <th class="text-left px-6 py-4 text-sm font-semibold text-slate-600">
+                                Time
+                            </th>
+
+                            <th class="text-left px-6 py-4 text-sm font-semibold text-slate-600">
+                                Subject
+                            </th>
+
+                            <th class="text-left px-6 py-4 text-sm font-semibold text-slate-600">
+                                Teacher
+                            </th>
+
+                            <th class="text-left px-6 py-4 text-sm font-semibold text-slate-600">
+                                Batch
+                            </th>
+
+                            <th class="text-left px-6 py-4 text-sm font-semibold text-slate-600">
+                                Room
+                            </th>
+
+                            <th class="text-right px-6 py-4 text-sm font-semibold text-slate-600">
+                                Actions
+                            </th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody class="divide-y divide-slate-100">
+
+                        {% for schedule in schedules %}
+
+                            <tr class="hover:bg-slate-50">
+
+                                <td class="px-6 py-4">
+                                    <span class="font-medium text-slate-800">
+                                        {{ schedule.get_day_display }}
+                                    </span>
+                                </td>
+
+                                <td class="px-6 py-4 text-slate-600">
+                                    {{ schedule.start_time|time:"g:i A" }}
+                                    -
+                                    {{ schedule.end_time|time:"g:i A" }}
+                                </td>
+
+                                <td class="px-6 py-4">
+
+                                    <div class="font-medium text-slate-800">
+                                        {{ schedule.subject.name }}
+                                    </div>
+
+                                    <div class="text-sm text-slate-500">
+                                        {{ schedule.subject.code }}
+                                    </div>
+
+                                </td>
+
+                                <td class="px-6 py-4 text-slate-600">
+                                    {{ schedule.teacher.name }}
+                                </td>
+
+                                <td class="px-6 py-4 text-slate-600">
+                                    {{ schedule.batch }}
+                                </td>
+
+                                <td class="px-6 py-4 text-slate-600">
+                                    {{ schedule.room.name }}
+                                </td>
+
+                                <td class="px-6 py-4 text-right whitespace-nowrap">
+
+                                    <a
+                                        href="{% url 'class_schedule_update' schedule.id %}"
+                                        class="text-blue-600 hover:text-blue-800 mr-4"
+                                    >
+                                        <i class="fa fa-edit"></i>
+                                        Edit
+                                    </a>
+
+                                    <a
+                                        href="{% url 'class_schedule_delete' schedule.id %}"
+                                        class="text-red-600 hover:text-red-800"
+                                    >
+                                        <i class="fa fa-trash"></i>
+                                        Delete
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        {% else %}
+
+            <div class="text-center py-16">
+
+                <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-4">
+                    <i class="fa fa-calendar text-slate-400 text-2xl"></i>
+                </div>
+
+                <h2 class="text-lg font-semibold text-slate-800">
+                    No Classes Scheduled
+                </h2>
+
+                <p class="text-slate-500 mt-2 mb-6">
+                    Create your first weekly class schedule.
+                </p>
+
+                <a
+                    href="{% url 'class_schedule_create' %}"
+                    class="inline-flex items-center gap-2 px-5 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                >
+                    <i class="fa fa-plus"></i>
+                    Add Class
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

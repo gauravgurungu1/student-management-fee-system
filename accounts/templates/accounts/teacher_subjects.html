@@ -1,0 +1,129 @@
+{% extends "teacher_base.html" %}
+
+{% block title %}My Subjects{% endblock %}
+
+{% block page_title %}My Subjects{% endblock %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto">
+
+    <!-- Page Header -->
+    <div class="mb-8">
+
+        <h1 class="text-2xl font-bold text-slate-800">
+            My Subjects
+        </h1>
+
+        <p class="text-slate-500 mt-1">
+            View the subjects and batches assigned to you.
+        </p>
+
+    </div>
+
+
+    {% if assignments %}
+
+        <!-- Subject Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            {% for assignment in assignments %}
+
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+
+                    <!-- Icon -->
+                    <div class="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center mb-5">
+
+                        <i class="fa fa-book text-blue-600 text-xl"></i>
+
+                    </div>
+
+
+                    <!-- Subject -->
+                    <h2 class="text-lg font-semibold text-slate-800">
+                        {{ assignment.subject.name }}
+                    </h2>
+
+
+                    <!-- Subject Code -->
+                    <p class="text-sm text-slate-500 mt-1">
+                        {{ assignment.subject.code }}
+                    </p>
+
+
+                    <!-- Course -->
+                    <div class="mt-5">
+
+                        <p class="text-xs font-medium text-slate-400 uppercase tracking-wide">
+                            Course
+                        </p>
+
+                        <p class="text-sm font-medium text-slate-700 mt-1">
+                            {{ assignment.subject.course.name }}
+                        </p>
+
+                    </div>
+
+
+                    <!-- Semester -->
+                    <div class="mt-4">
+
+                        <p class="text-xs font-medium text-slate-400 uppercase tracking-wide">
+                            Semester
+                        </p>
+
+                        <p class="text-sm font-medium text-slate-700 mt-1">
+                            Semester {{ assignment.subject.semester }}
+                        </p>
+
+                    </div>
+
+
+                    <!-- Batch -->
+                    <div class="mt-4">
+
+                        <p class="text-xs font-medium text-slate-400 uppercase tracking-wide">
+                            Batch
+                        </p>
+
+                        <p class="text-sm font-medium text-slate-700 mt-1">
+                            {{ assignment.batch }}
+                        </p>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+
+    {% else %}
+
+        <!-- Empty State -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-10 text-center">
+
+            <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-4">
+
+                <i class="fa fa-book text-slate-400 text-2xl"></i>
+
+            </div>
+
+
+            <h2 class="text-lg font-semibold text-slate-800">
+                No Subjects Assigned
+            </h2>
+
+
+            <p class="text-slate-500 mt-2">
+                You currently have no subjects assigned to you.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

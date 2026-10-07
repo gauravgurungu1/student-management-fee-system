@@ -1,0 +1,230 @@
+{% extends "teacher_base.html" %}
+
+{% block title %}Mark Attendance{% endblock %}
+
+{% block page_title %}Mark Attendance{% endblock %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto">
+
+
+    <!-- Header -->
+
+    <div class="flex items-center justify-between mb-6">
+
+        <div>
+
+            <h1 class="text-2xl font-bold text-slate-800">
+                {{ session.subject.code }}
+                - {{ session.subject.name }}
+            </h1>
+
+            <p class="text-slate-500 mt-1">
+                {{ session.course.name }}
+                ·
+                Batch {{ session.batch }}
+                ·
+                {{ session.date }}
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'attendance_list' %}"
+            class="px-4 py-2 rounded-lg
+                   border border-slate-200
+                   text-slate-600 hover:bg-slate-50"
+        >
+            Back
+        </a>
+
+    </div>
+
+
+    <!-- Summary -->
+
+    <div class="grid grid-cols-2 gap-4 mb-6">
+
+        <div class="bg-white rounded-xl shadow-sm
+                    border border-slate-200 p-5">
+
+            <p class="text-sm text-slate-500">
+                Present
+            </p>
+
+            <p class="text-2xl font-bold text-green-600 mt-1">
+                {{ present_count }}
+            </p>
+
+        </div>
+
+
+        <div class="bg-white rounded-xl shadow-sm
+                    border border-slate-200 p-5">
+
+            <p class="text-sm text-slate-500">
+                Absent
+            </p>
+
+            <p class="text-2xl font-bold text-red-600 mt-1">
+                {{ absent_count }}
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- Attendance Form -->
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+
+        <div class="bg-white rounded-xl shadow-sm
+                    border border-slate-200 overflow-hidden">
+
+
+            <div class="px-6 py-5 border-b border-slate-200
+                        flex items-center justify-between">
+
+                <div>
+
+                    <h2 class="text-lg font-semibold text-slate-800">
+                        Students
+                    </h2>
+
+                    <p class="text-sm text-slate-500 mt-1">
+                        Students are marked Present by default.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    onclick="markAllPresent()"
+                    class="px-4 py-2 rounded-lg
+                           bg-green-600 hover:bg-green-700
+                           text-white text-sm"
+                >
+                    <i class="fa fa-check"></i>
+                    Mark All Present
+                </button>
+
+            </div>
+
+
+            <div class="divide-y divide-slate-100">
+
+                {% for record in records %}
+
+                <div class="px-6 py-4 flex items-center
+                            justify-between hover:bg-slate-50">
+
+                    <div>
+
+                        <p class="font-medium text-slate-800">
+                            {{ record.student.name }}
+                        </p>
+
+                        <p class="text-sm text-slate-500">
+                            {{ record.student.email }}
+                        </p>
+
+                    </div>
+
+
+                    <div class="flex items-center gap-6">
+
+                        <label class="flex items-center gap-2
+                                      text-green-600 cursor-pointer">
+
+                            <input
+                                type="radio"
+                                name="status_{{ record.id }}"
+                                value="PRESENT"
+                                {% if record.status == "PRESENT" %}
+                                    checked
+                                {% endif %}
+                                class="attendance-radio
+                                       present-radio"
+                            >
+
+                            Present
+
+                        </label>
+
+
+                        <label class="flex items-center gap-2
+                                      text-red-600 cursor-pointer">
+
+                            <input
+                                type="radio"
+                                name="status_{{ record.id }}"
+                                value="ABSENT"
+                                {% if record.status == "ABSENT" %}
+                                    checked
+                                {% endif %}
+                                class="attendance-radio
+                                       absent-radio"
+                            >
+
+                            Absent
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+                {% empty %}
+
+                <div class="px-6 py-10 text-center text-slate-500">
+                    No students found.
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+
+            <div class="px-6 py-5 border-t border-slate-200
+                        flex justify-end">
+
+                <button
+                    type="submit"
+                    class="px-6 py-3 rounded-lg
+                           bg-blue-600 hover:bg-blue-700
+                           text-white"
+                >
+                    <i class="fa fa-save"></i>
+                    Save Attendance
+                </button>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+<script>
+
+function markAllPresent() {
+
+    document
+        .querySelectorAll(".present-radio")
+        .forEach(function (radio) {
+            radio.checked = true;
+        });
+
+}
+
+</script>
+
+{% endblock %}
